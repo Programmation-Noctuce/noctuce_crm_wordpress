@@ -33,9 +33,11 @@ if (!defined('ABSPATH')) {
 global $noctuce_crm_person_version;
 global $noctuce_crm_path;
 global $noctuce_crm_content;
+global $noctuce_crm_slug;
 
 $noctuce_crm_person_version = "0.1";
 $noctuce_crm_path = plugin_dir_path( __FILE__ );
+$noctuce_crm_slug = "noctuce-crm";
 
 require_once($noctuce_crm_path . "Noctuce-crm-activation.php");
 require_once($noctuce_crm_path . "Noctuce-crm-admin.php");

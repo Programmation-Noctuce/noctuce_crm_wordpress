@@ -38,15 +38,13 @@ class Noctuce_CRM_PersonManager
         global $wpdb;
         global $noctuce_crm_person_version;
         
-        $this->init();
-
         $charset_collate = $wpdb->get_charset_collate();
 
-        if($wpdb->get_var("SHOW TABLES LIKE " . $this->_table_name) != $table_name) {
+        if($wpdb->get_var("SHOW TABLES LIKE '" . $this->_table_name . "';") != $this->_table_name) {
             $this->createTable();
         }
 
-        if(get_option("noctuce_crm_person_version") != $noctuce_crm_person_version) {
+        if(get_option($this->_table_name . "_version") != $noctuce_crm_person_version) {
             $this->updateTable();
         }
     }
@@ -55,8 +53,6 @@ class Noctuce_CRM_PersonManager
     {
         global $wpdb;
         global $noctuce_crm_path;
-
-        $this->init();
 
         $sql = "
         CREATE TABLE " . $this->_table_name . " (
@@ -81,13 +77,11 @@ class Noctuce_CRM_PersonManager
             ) 
         );*/
 
-        add_option("noctuce_crm_person_version", "0.1");
+        add_option($this->_table_name . "_version", "0.1");
     }
 
     public function updateTable()
     {
-        $this->init();
-
         /*$sql = "
         CREATE TABLE " . $table_name . " (
             id      INT PRIMARY KEY AUTO_INCREMENT,
@@ -130,5 +124,27 @@ class Noctuce_CRM_PersonManager
 
             array_push($this->_list, $person);
         }
+    }
+
+    public function getFromId($id)
+    {
+        try {
+            settype($id, "integer");
+        }
+        catch(Exception $e) {
+            die("Noctuce_CRM_PersonManager getFromId require integer");
+        }
+        
+        $this->updateList();
+
+        foreach($this->_list as $currentPerson)
+        {
+            if($currentPerson->getId() == $id)
+            {
+                return $currentPerson;
+            }
+        }
+
+        return null;
     }
 }

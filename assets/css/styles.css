@@ -1,0 +1,50 @@
+.crm_menu {
+    width: calc(100% - 20px);
+    height: calc(100vh - 175px);
+}
+
+.crm_menu > div {
+    display: inline-block;
+    height: 100%;
+    border: 2px solid #000000;
+}
+
+.crm_left_menu {
+    width: 20%;
+    float: left;
+}
+
+.crm_left_menu > h3 {
+    margin: 0;
+    padding: 5px;
+
+    border-bottom: 2px solid #000000;
+}
+
+.crm_left_menu > ul {
+    margin: 0;
+}
+
+.crm_left_menu > ul > li {
+    padding: 5px;
+
+    font-size: 15px;
+}
+
+.crm_left_menu > ul > li:hover {
+    padding: 3px;
+
+    color: blue;
+    border: 2px solid blue;
+    cursor: pointer;
+}
+
+.crm_left_menu > ul > li:hover {
+    color: blue;
+    border: 2px solid blue;
+    cursor: pointer;
+}
+
+.crm_right_menu {
+    width: calc(80% - 20px); float: left;
+}
