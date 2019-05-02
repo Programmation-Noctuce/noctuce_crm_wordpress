@@ -5,7 +5,7 @@ class Noctuce_CRM_Employee
     
     private $_employeeRole;
     private $_entreprise;
-    private $_person;
+    private $_individual;
 
     function __construct()
     {
@@ -15,24 +15,24 @@ class Noctuce_CRM_Employee
     {        
     }
 
-    public function initFromRow($row, $person, $entreprise, $employeeRole)
+    public function initFromRow($row, $individual, $entreprise, $employeeRole)
     {
         if(gettype($employeeRole) != "object" ||
             get_class($employeeRole) != "Noctuce_CRM_EmployeeRole")
         die("Noctuce_CRM_Employee initFromRow require Noctuce_CRM_EmployeeRole");
 
         if(gettype($entreprise) != "object" ||
-            get_class($entreprise) != "Noctuce_CRM_Entreprise")
-        die("Noctuce_CRM_Employee initFromRow require Noctuce_CRM_Entreprise");
+            get_class($entreprise) != "Noctuce_CRM_Person")
+        die("Noctuce_CRM_Employee initFromRow require Noctuce_CRM_Person");
         
-        if(gettype($person) != "object" ||
-            get_class($person) != "Noctuce_CRM_Person")
+        if(gettype($individual) != "object" ||
+            get_class($individual) != "Noctuce_CRM_Person")
         die("Noctuce_CRM_Employee initFromRow require Noctuce_CRM_Person");
         
         $this->_id = $row["id"];
         $this->_employeeRole = $employeeRole;
         $this->_entreprise = $entreprise;
-        $this->_person = $person;
+        $this->_individual = $individual;
     }
 
     public function getId()
@@ -47,8 +47,8 @@ class Noctuce_CRM_Employee
     {
         return $this->_entreprise;
     }
-    public function getPerson()
+    public function getIndividual()
     {
-        return $this->_person;
+        return $this->_individual;
     }
 }

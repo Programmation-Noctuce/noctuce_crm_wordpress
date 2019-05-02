@@ -8,30 +8,23 @@ class Noctuce_CRM_EmployeeManager
     private $_table_name;
 
     private $_noctuce_CRM_EmployeeRoleManager;
-    private $_noctuce_CRM_EntrepriseManager;
     private $_noctuce_CRM_PersonManager;
 
     private $_list;
 
     function __construct(
         $noctuce_CRM_EmployeeRoleManager, 
-        $noctuce_CRM_EntrepriseManager, 
         $noctuce_CRM_PersonManager)
     {
         if(gettype($noctuce_CRM_EmployeeRoleManager) != "object" ||
             get_class($noctuce_CRM_EmployeeRoleManager) != "Noctuce_CRM_EmployeeRoleManager")
         die("Noctuce_CRM_EmployeeManager __construct require Noctuce_CRM_EmployeeRoleManager");
 
-        if(gettype($noctuce_CRM_EntrepriseManager) != "object" ||
-            get_class($noctuce_CRM_EntrepriseManager) != "Noctuce_CRM_EntrepriseManager")
-        die("Noctuce_CRM_EmployeeManager __construct require Noctuce_CRM_EntrepriseManager");
-
         if(gettype($noctuce_CRM_PersonManager) != "object" ||
             get_class($noctuce_CRM_PersonManager) != "Noctuce_CRM_PersonManager")
         die("Noctuce_CRM_EmployeeManager __construct require Noctuce_CRM_PersonManager");
 
         $this->_noctuce_CRM_EmployeeRoleManager = $noctuce_CRM_EmployeeRoleManager;
-        $this->_noctuce_CRM_EntrepriseManager = $noctuce_CRM_EntrepriseManager;
         $this->_noctuce_CRM_PersonManager = $noctuce_CRM_PersonManager;
 
         $this->init();
@@ -80,13 +73,13 @@ class Noctuce_CRM_EmployeeManager
         $sql = "
         CREATE TABLE " . $this->_table_name . " (
             id        INT PRIMARY KEY AUTO_INCREMENT,
-            person_id  INT NOT NULL, 
+            individual_id  INT NOT NULL, 
             entreprise_id  INT NOT NULL, 
             employee_role_id  INT NOT NULL, 
-            FOREIGN KEY (person_id) REFERENCES " . 
+            FOREIGN KEY (individual_id) REFERENCES " . 
             $this->_noctuce_CRM_PersonManager->getTableName() . "(id), 
             FOREIGN KEY (entreprise_id) REFERENCES " . 
-            $this->_noctuce_CRM_EntrepriseManager->getTableName() . "(id), 
+            $this->_noctuce_CRM_PersonManager->getTableName() . "(id), 
             FOREIGN KEY (employee_role_id) REFERENCES " . 
             $this->_noctuce_CRM_EmployeeRoleManager->getTableName() . "(id)
         ) " . $wpdb->get_charset_collate() . ";";
@@ -112,8 +105,8 @@ class Noctuce_CRM_EmployeeManager
             $employee = new Noctuce_CRM_Employee();
 
             $employee->initFromRow($employeeRow,
-                $this->_noctuce_CRM_PersonManager->getFromId($employeeRow["person_id"]),
-                $this->_noctuce_CRM_EntrepriseManager->getFromId($employeeRow["entreprise_id"]),
+                $this->_noctuce_CRM_PersonManager->getFromId($employeeRow["individual_id"]),
+                $this->_noctuce_CRM_PersonManager->getFromId($employeeRow["entreprise_id"]),
                 $this->_noctuce_CRM_EmployeeRoleManager->getFromId($employeeRow["employee_role_id"]));
 
             array_push($this->_list, $employee);

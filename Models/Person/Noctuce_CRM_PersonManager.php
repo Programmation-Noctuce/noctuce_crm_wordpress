@@ -7,10 +7,18 @@ class Noctuce_CRM_PersonManager
 {
     private $_table_name;
 
+    private $_noctuce_CRM_PersonTypeManager;
+
     private $_list;
 
-    function __construct()
+    function __construct($noctuce_CRM_PersonTypeManager)
     {
+        if(gettype($noctuce_CRM_PersonTypeManager) != "object" ||
+            get_class($noctuce_CRM_PersonTypeManager) != "Noctuce_CRM_PersonTypeManager")
+        die("Noctuce_CRM_PersonManager __construct require Noctuce_CRM_PersonTypeManager");
+
+        $this->_noctuce_CRM_PersonTypeManager = $noctuce_CRM_PersonTypeManager;
+
         $this->init();
     }
 
@@ -57,7 +65,10 @@ class Noctuce_CRM_PersonManager
         $sql = "
         CREATE TABLE " . $this->_table_name . " (
             id      INT PRIMARY KEY AUTO_INCREMENT,
-            name    VARCHAR(256) NOT NULL
+            name    VARCHAR(256) NOT NULL, 
+            person_type_id  INT NOT NULL, 
+            FOREIGN KEY (person_type_id) REFERENCES " . 
+            $this->_noctuce_CRM_PersonTypeManager->getTableName() . "(id)
         ) " . $wpdb->get_charset_collate() . ";";
     
         require_once( $_SERVER['DOCUMENT_ROOT'] . 'wp-includes/wp-db.php' );
@@ -120,7 +131,8 @@ class Noctuce_CRM_PersonManager
         {
             $person = new Noctuce_CRM_Person();
 
-            $person->initFromRow($personRow);
+            $person->initFromRow($personRow, 
+                $this->_noctuce_CRM_PersonTypeManager->getFromId($personRow["person_type_id"]));
 
             array_push($this->_list, $person);
         }
